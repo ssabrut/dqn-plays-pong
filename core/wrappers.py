@@ -53,7 +53,7 @@ class FrameStack(gym.ObservationWrapper):
 
         return self._get_obs(), info
 
-    def step(self, action: Any) -> tuple[Any, SupportsFloat, bool, bool, dict[str, Any]]:
+    def step(self, action: Any) -> tuple:
         obs, reward, terminated, truncated, info = self.env.step(action)
         self.frames.append(obs)
         return self._get_obs(), reward, terminated, truncated, info
