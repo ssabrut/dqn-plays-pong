@@ -1,0 +1,13 @@
+[project]
+name = "dqn-plays-pong"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "ale-py>=0.11.2",
+    "gymnasium[accept-rom-license,atari]>=1.2.1",
+    "numpy>=2.2.6",
+    "opencv-python>=4.11.0.86",
+    "torch>=2.8.0",
+]
