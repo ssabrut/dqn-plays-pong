@@ -38,7 +38,14 @@ if __name__ == "__main__":
             next_state, reward, terminated, truncated, _ = env.step(action)
             done = terminated or truncated
 
-            pong_agent.buffer.store(state, action, reward, next_state, done)
+            if reward > 0:
+                shaped_reward = 5
+            elif reward < 0:
+                shaped_reward = -5
+            else:
+                shaped_reward = 1e-2
+
+            pong_agent.buffer.store(state, action, shaped_reward, next_state, done)
             state = next_state
             episode_reward += reward
 
