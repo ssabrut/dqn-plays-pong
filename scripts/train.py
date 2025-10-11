@@ -2,18 +2,20 @@ import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+import ale_py
 import torch
 import time
 import gymnasium as gym
 import numpy as np
 
 from core import wrappers, agent, config
+gym.register_envs(ale_py)
 
 if __name__ == "__main__":
     print(f"Using device: {config.DEVICE}")
 
     # Create and wrap the environment
-    env = gym.make(config.ENV_NAME)
+    env = gym.make(config.ENV_NAME, render_mode="human")
     env = wrappers.GrayScaleObservation(env)
     env = wrappers.ResizeObservation(env, shape=84)
     env = wrappers.FrameStack(env, k=4)
@@ -49,6 +51,8 @@ if __name__ == "__main__":
             if done:
                 episode_rewards.append(episode_reward)
                 break
+
+        print(f"Episode {episode} - Reward: {episode_reward}")
 
         if episode % config.LOG_FREQ == 0:
             mean_reward = np.mean(episode_rewards[-100:])

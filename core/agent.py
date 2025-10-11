@@ -33,7 +33,7 @@ class DQNAgent:
             with torch.no_grad():
                 state_tensor = torch.from_numpy(state).unsqueeze(0).to(DEVICE)
                 q_values = self.policy_net(state_tensor)
-                return q_values.argmax().items()
+                return q_values.argmax().item()
 
     def decay_epsilon(self, frame_idx):
         c = self.config

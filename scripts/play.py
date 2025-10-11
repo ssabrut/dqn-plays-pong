@@ -3,11 +3,14 @@ import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+import ale_py
 import time
 import torch
 import gymnasium as gym
 
 from core import wrappers, model, config
+
+gym.register_envs(ale_py)
 
 if __name__ == "__main__":
     env = gym.make(config.ENV_NAME, render_mode="human")
