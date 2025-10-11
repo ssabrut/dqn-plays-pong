@@ -44,10 +44,14 @@ if __name__ == "__main__":
             next_state, reward, terminated, truncated, _ = env.step(action)
             done = terminated or truncated
 
+            is_no_action = (action == 0)
+
             if reward > 0:
-                shaped_reward = 5
+                shaped_reward = 5.0
             elif reward < 0:
-                shaped_reward = -5
+                shaped_reward = -5.0
+            elif is_no_action:
+                shaped_reward = -2e-2
             else:
                 shaped_reward = 1e-2
 
