@@ -8,11 +8,16 @@ import time
 import gymnasium as gym
 import numpy as np
 
+from torch.utils.tensorboard import SummaryWriter
+
 from core import wrappers, agent, config
 gym.register_envs(ale_py)
 
 if __name__ == "__main__":
     print(f"Using device: {config.DEVICE}")
+
+    # Initialize logger
+    writer = SummaryWriter(f"runs/pong_experiment_{int(time.time())}")
 
     # Create and wrap the environment
     env = gym.make(config.ENV_NAME, render_mode="human")
@@ -31,6 +36,7 @@ if __name__ == "__main__":
     for episode in range(1, 10001):
         state, _ = env.reset()
         episode_reward = 0
+        episode_shaped_reward = 0.
 
         while True:
             total_frames += 1
@@ -47,7 +53,9 @@ if __name__ == "__main__":
 
             pong_agent.buffer.store(state, action, shaped_reward, next_state, done)
             state = next_state
+            
             episode_reward += reward
+            episode_shaped_reward += shaped_reward
 
             loss = pong_agent.learn()
             pong_agent.decay_epsilon(total_frames)
@@ -58,7 +66,14 @@ if __name__ == "__main__":
             if done:
                 episode_rewards.append(episode_reward)
                 break
+        
 
+        mean_reward = np.mean(episode_rewards[-100:])
+        writer.add_scalar("Reward/Original_Reward_Per_Episode", episode_reward, episode)
+        writer.add_scalar("Reward/Shaped_Reward_Per_Episode", episode_shaped_reward, episode)
+        writer.add_scalar("Reward/Mean_Original_Reward_Last_100", mean_reward, episode)
+        writer.add_scalar("Stats/Epsilon", pong_agent.epsilon, total_frames)
+        
         print(f"Episode {episode} - Reward: {episode_reward}")
 
         if episode % config.LOG_FREQ == 0:
@@ -73,4 +88,6 @@ if __name__ == "__main__":
     os.makedirs(os.path.dirname(config.MODEL_SAVE_PATH), exist_ok=True)
     torch.save(pong_agent.policy_net.state_dict(), config.MODEL_SAVE_PATH)
     print(f"Model saved to {config.MODEL_SAVE_PATH}")
+
+    writer.close()
     env.close()
