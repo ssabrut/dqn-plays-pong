@@ -30,8 +30,12 @@ class ReplayBuffer:
             ValueError: If `capacity` is not a positive integer.
         """
         if not isinstance(capacity, int) or capacity <= 0:
-            raise ValueError(f"'capacity' must be a positive integer, but got {capacity}.")
-        self.buffer: Deque[Tuple[np.ndarray, Any, float, np.ndarray, bool]] = deque(maxlen=capacity)
+            raise ValueError(
+                f"'capacity' must be a positive integer, but got {capacity}."
+            )
+        self.buffer: Deque[Tuple[np.ndarray, Any, float, np.ndarray, bool]] = deque(
+            maxlen=capacity
+        )
 
     def __len__(self) -> int:
         """
@@ -42,7 +46,9 @@ class ReplayBuffer:
         """
         return len(self.buffer)
 
-    def store(self, state: Any, action: Any, reward: float, next_state: Any, done: bool) -> None:
+    def store(
+        self, state: Any, action: Any, reward: float, next_state: Any, done: bool
+    ) -> None:
         """
         Adds a new experience to the buffer.
 
@@ -58,7 +64,9 @@ class ReplayBuffer:
         next_state_np = np.array(next_state, dtype=np.float32)
         self.buffer.append((state_np, action, reward, next_state_np, done))
 
-    def sample(self, batch_size: int) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    def sample(
+        self, batch_size: int
+    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         """
         Randomly samples a batch of experiences from the buffer.
 
@@ -74,7 +82,9 @@ class ReplayBuffer:
                         than the number of experiences currently in the buffer.
         """
         if not isinstance(batch_size, int) or batch_size <= 0:
-            raise ValueError(f"'batch_size' must be a positive integer, but got {batch_size}.")
+            raise ValueError(
+                f"'batch_size' must be a positive integer, but got {batch_size}."
+            )
         if batch_size > len(self.buffer):
             raise ValueError(
                 f"Cannot sample {batch_size} elements when the buffer only contains "

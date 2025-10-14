@@ -40,13 +40,21 @@ class DQN(nn.Module):
         super().__init__()
         # --- Validation ---
         if not isinstance(input_shape, tuple):
-            raise TypeError(f"input_shape must be a tuple, but got {type(input_shape)}.")
+            raise TypeError(
+                f"input_shape must be a tuple, but got {type(input_shape)}."
+            )
         if len(input_shape) != 3:
-            raise ValueError(f"input_shape must have 3 dimensions (C, H, W), but got {len(input_shape)}.")
+            raise ValueError(
+                f"input_shape must have 3 dimensions (C, H, W), but got {len(input_shape)}."
+            )
         if not all(isinstance(dim, int) and dim > 0 for dim in input_shape):
-            raise ValueError(f"All dimensions in input_shape must be positive integers, but got {input_shape}.")
+            raise ValueError(
+                f"All dimensions in input_shape must be positive integers, but got {input_shape}."
+            )
         if num_actions <= 0:
-            raise ValueError(f"num_actions must be a positive integer, but got {num_actions}.")
+            raise ValueError(
+                f"num_actions must be a positive integer, but got {num_actions}."
+            )
         # --- End Validation ---
 
         self.input_shape: Tuple[int, int, int] = input_shape
@@ -122,7 +130,9 @@ class DQN(nn.Module):
         if not isinstance(x, torch.Tensor):
             raise TypeError(f"Input must be a torch.Tensor, but got {type(x)}.")
         if x.dim() != 4:
-            raise ValueError(f"Expected a 4D input tensor (N, C, H, W), but got a tensor with {x.dim()} dimensions.")
+            raise ValueError(
+                f"Expected a 4D input tensor (N, C, H, W), but got a tensor with {x.dim()} dimensions."
+            )
         if x.shape[1:] != self.input_shape:
             raise ValueError(
                 f"Input tensor shape {x.shape[1:]} does not match the expected "
@@ -139,5 +149,7 @@ class DQN(nn.Module):
         value: torch.Tensor = self.value_stream(flattened_out)
         advantage: torch.Tensor = self.advantage_stream(flattened_out)
 
-        q_values: torch.Tensor = value + (advantage - advantage.mean(dim=1, keepdim=True))
+        q_values: torch.Tensor = value + (
+            advantage - advantage.mean(dim=1, keepdim=True)
+        )
         return q_values

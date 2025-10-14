@@ -124,12 +124,13 @@ def train_agent(
         # --- Logging ---
         mean_reward = np.mean(episode_rewards)
         writer.add_scalar("Reward/Original_Reward_Per_Episode", episode_reward, episode)
-        writer.add_scalar("Reward/Shaped_Reward_Per_Episode", episode_shaped_reward, episode)
+        writer.add_scalar(
+            "Reward/Shaped_Reward_Per_Episode", episode_shaped_reward, episode
+        )
         writer.add_scalar("Reward/Mean_Original_Reward_Last_100", mean_reward, episode)
         writer.add_scalar("Stats/Epsilon", pong_agent.epsilon, total_frames)
         if loss is not None:
-             writer.add_scalar("Stats/Loss", loss, total_frames)
-
+            writer.add_scalar("Stats/Loss", loss, total_frames)
 
         if episode % config.LOG_FREQ == 0:
             fps = total_frames / (time.perf_counter() - start_time)

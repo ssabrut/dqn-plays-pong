@@ -25,6 +25,7 @@ from core import config, model, wrappers
 # Register Atari environments with Gymnasium
 gym.register_envs(ale_py)
 
+
 def setup_environment(env_name: str, resize_shape: int, frame_stack_k: int) -> gym.Env:
     """
     Initializes and wraps the Gymnasium environment.
@@ -41,9 +42,13 @@ def setup_environment(env_name: str, resize_shape: int, frame_stack_k: int) -> g
         ValueError: If `resize_shape` or `frame_stack_k` are not positive integers.
     """
     if not isinstance(resize_shape, int) or resize_shape <= 0:
-        raise ValueError(f"'resize_shape' must be a positive integer, but got {resize_shape}")
+        raise ValueError(
+            f"'resize_shape' must be a positive integer, but got {resize_shape}"
+        )
     if not isinstance(frame_stack_k, int) or frame_stack_k <= 0:
-        raise ValueError(f"'frame_stack_k' must be a positive integer, but got {frame_stack_k}")
+        raise ValueError(
+            f"'frame_stack_k' must be a positive integer, but got {frame_stack_k}"
+        )
 
     env = gym.make(env_name, render_mode="human")
     env = wrappers.GrayScaleObservation(env)

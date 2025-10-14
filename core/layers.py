@@ -30,14 +30,24 @@ class ResidualBlock(nn.Module):
         """
         super().__init__()
         if not isinstance(in_channels, int) or in_channels <= 0:
-            raise ValueError(f"'in_channels' must be a positive integer, but got {in_channels}.")
+            raise ValueError(
+                f"'in_channels' must be a positive integer, but got {in_channels}."
+            )
 
         self.conv1: nn.Conv2d = nn.Conv2d(
-            in_channels=in_channels, out_channels=in_channels, kernel_size=3, stride=1, padding=1
+            in_channels=in_channels,
+            out_channels=in_channels,
+            kernel_size=3,
+            stride=1,
+            padding=1,
         )
         self.bn1: nn.BatchNorm2d = nn.BatchNorm2d(num_features=in_channels)
         self.conv2: nn.Conv2d = nn.Conv2d(
-            in_channels=in_channels, out_channels=in_channels, kernel_size=3, stride=1, padding=1
+            in_channels=in_channels,
+            out_channels=in_channels,
+            kernel_size=3,
+            stride=1,
+            padding=1,
         )
         self.bn2: nn.BatchNorm2d = nn.BatchNorm2d(num_features=in_channels)
 
@@ -60,7 +70,9 @@ class ResidualBlock(nn.Module):
         if not isinstance(x, torch.Tensor):
             raise TypeError(f"Input must be a torch.Tensor, but got {type(x)}.")
         if x.dim() != 4:
-            raise ValueError(f"Expected a 4D input tensor (N, C, H, W), but got a tensor with {x.dim()} dimensions.")
+            raise ValueError(
+                f"Expected a 4D input tensor (N, C, H, W), but got a tensor with {x.dim()} dimensions."
+            )
         if x.size(1) != self.conv1.in_channels:
             raise ValueError(
                 f"Input tensor has {x.size(1)} channels, but the block was initialized "

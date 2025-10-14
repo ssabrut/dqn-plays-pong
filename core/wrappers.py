@@ -32,9 +32,16 @@ class GrayScaleObservation(gym.ObservationWrapper):
         super().__init__(env)
 
         if not isinstance(self.observation_space, gym.spaces.Box):
-            raise ValueError("GrayScaleObservation is only compatible with Box observation spaces.")
-        if self.observation_space.shape is None or len(self.observation_space.shape) < 3:
-            raise ValueError("Observation space shape must have at least 3 dimensions (H, W, C).")
+            raise ValueError(
+                "GrayScaleObservation is only compatible with Box observation spaces."
+            )
+        if (
+            self.observation_space.shape is None
+            or len(self.observation_space.shape) < 3
+        ):
+            raise ValueError(
+                "Observation space shape must have at least 3 dimensions (H, W, C)."
+            )
 
         obs_shape: Tuple[int, ...] = self.observation_space.shape[:2]
         self.observation_space = gym.spaces.Box(
@@ -56,7 +63,9 @@ class GrayScaleObservation(gym.ObservationWrapper):
             ValueError: If the observation is not a 3D array with 3 color channels.
         """
         if not isinstance(observation, np.ndarray):
-            raise TypeError(f"Observation must be a NumPy array, but got {type(observation)}.")
+            raise TypeError(
+                f"Observation must be a NumPy array, but got {type(observation)}."
+            )
         if observation.ndim != 3 or observation.shape[2] != 3:
             raise ValueError(
                 "Observation must be a 3D array with 3 color channels (H, W, C) for grayscale conversion."
@@ -89,15 +98,23 @@ class ResizeObservation(gym.ObservationWrapper):
 
         if isinstance(shape, int):
             if shape <= 0:
-                raise ValueError(f"If shape is an int, it must be positive, but got {shape}.")
+                raise ValueError(
+                    f"If shape is an int, it must be positive, but got {shape}."
+                )
             self.shape: Tuple[int, int] = (shape, shape)
-        elif isinstance(shape, tuple) and len(shape) == 2 and all(isinstance(i, int) and i > 0 for i in shape):
+        elif (
+            isinstance(shape, tuple)
+            and len(shape) == 2
+            and all(isinstance(i, int) and i > 0 for i in shape)
+        ):
             self.shape = shape
         else:
-            raise ValueError(f"'shape' must be a positive int or a tuple of two positive ints, but got {shape}.")
+            raise ValueError(
+                f"'shape' must be a positive int or a tuple of two positive ints, but got {shape}."
+            )
 
         if not self.observation_space or not hasattr(self.observation_space, "shape"):
-             raise ValueError("Observation space or its shape is not defined")
+            raise ValueError("Observation space or its shape is not defined")
 
         obs_shape: Tuple[int, ...] = self.shape + self.observation_space.shape[2:]
         self.observation_space = gym.spaces.Box(
@@ -118,7 +135,9 @@ class ResizeObservation(gym.ObservationWrapper):
             TypeError: If the observation is not a NumPy array.
         """
         if not isinstance(observation, np.ndarray):
-            raise TypeError(f"Observation must be a NumPy array, but got {type(observation)}.")
+            raise TypeError(
+                f"Observation must be a NumPy array, but got {type(observation)}."
+            )
         return cv2.resize(observation, self.shape, interpolation=cv2.INTER_AREA)
 
 
@@ -147,13 +166,15 @@ class FrameStack(gym.ObservationWrapper):
         """
         super().__init__(env)
         if not isinstance(k, int) or k <= 1:
-            raise ValueError(f"Frame stack size `k` must be an integer greater than 1, but got {k}.")
+            raise ValueError(
+                f"Frame stack size `k` must be an integer greater than 1, but got {k}."
+            )
 
         self.k: int = k
         self.frames: Deque[np.ndarray] = deque([], maxlen=k)
 
         if not self.observation_space or not hasattr(self.observation_space, "shape"):
-             raise ValueError("Observation space or its shape is not defined")
+            raise ValueError("Observation space or its shape is not defined")
 
         obs_shape: Tuple[int, ...] = self.observation_space.shape
         self.observation_space = gym.spaces.Box(
