@@ -33,7 +33,7 @@ if __name__ == "__main__":
     start_time = time.perf_counter()
 
     print("Starting training...")
-    for episode in range(1, 10001):
+    for episode in range(1, 501):
         state, _ = env.reset()
         episode_reward = 0
         episode_shaped_reward = 0.

@@ -7,13 +7,13 @@ DEVICE: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cp
 
 # --- Hyperparameters ---
 BATCH_SIZE: int = 32
-GAMMA: float = 99e-2
+GAMMA: float = 995e-3
 EPSILON_START: float = 1.0
 EPSILON_END: float = 2e-2
-EPSILON_DECAY: int = 30000
-TARGET_UPDATE_FREQ: int = 1000
+EPSILON_DECAY: int = 100_000
+TARGET_UPDATE_FREQ: int = 10_000
 LEARNING_RATE: float = 1e-4
-BUFFER_SIZE: int = 100000
+BUFFER_SIZE: int = 100_000
 
 # --- Training settings ---
 TOTAL_FRAMES: int = 1000000
