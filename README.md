@@ -2,6 +2,24 @@
 
 This repository implements a Deep Q-Network (DQN) agent to play Atari Pong using `gymnasium` (ALE) and PyTorch. It includes common Atari preprocessing wrappers, a replay buffer, a convolutional Q-network, and a training loop with TensorBoard logging.
 
+### Prerequisites
+- **Python 3.11** (recommended)
+- **uv** package manager
+
+Install uv (one-time):
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Create a virtual environment and install dependencies with uv:
+
+```bash
+uv venv --python 3.11
+source .venv/bin/activate
+uv sync
+```
+
 ### Repository Structure
 - `scripts/train.py`: Training entrypoint; sets up env, logs to TensorBoard, performs reward shaping, optimizes DQN, and periodically updates target network.
 - `scripts/play.py`: Loads a saved model and plays a few episodes greedily to demonstrate performance.
@@ -27,10 +45,10 @@ The raw Pong reward (+1/-1 on points) is sparse for learning. The training scrip
 This shaping addresses early stagnation and the “do-nothing at edges” local optimum observed in experiments. Adjust shaping cautiously to avoid diverging from the true objective.
 
 ### Running Training
-Install dependencies (Python >= 3.10), then run:
+With the environment set up (Python 3.11 via uv), run:
 
 ```bash
-python -m scripts.train
+uv run python -m scripts.train
 ```
 
 TensorBoard:
@@ -43,7 +61,7 @@ tensorboard --logdir runs
 Ensure a model is saved at the configured path (`core/config.py` → `MODEL_SAVE_PATH`), then:
 
 ```bash
-python -m scripts.play
+uv run python -m scripts.play
 ```
 
 ### Key Hyperparameters (see `core/config.py`)
