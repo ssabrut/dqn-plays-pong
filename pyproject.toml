@@ -9,6 +9,7 @@ dependencies = [
     "black>=25.9.0",
     "gymnasium[accept-rom-license,atari]>=1.2.1",
     "isort>=7.0.0",
+    "loguru>=0.7.3",
     "numpy>=2.2.6",
     "opencv-python>=4.11.0.86",
     "tensorboard>=2.20.0",

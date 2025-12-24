@@ -1,7 +1,8 @@
 import torch
 
 # --- Environment ---
-ENV_NAME: str = "ALE/Pong-v5"
+# ENV_NAME: str = "ALE/Pong-v5"
+ENV_NAME: str = "PongNoFrameskip-v4"
 MODEL_SAVE_PATH: str = "models/dqn_pong_model.pth"
 DEVICE: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
